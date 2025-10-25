@@ -1,4 +1,3 @@
-
 // @ts-ignore: allow importing SVGs without type declarations
 import Logo from "@/assets/images/app-logo.svg";
 import {
@@ -7,6 +6,7 @@ import {
 } from "@/components/ui/GradientBackground";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
 import { useRouter } from "expo-router";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import {
   ActivityIndicator,
@@ -17,9 +17,8 @@ import {
   View,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase"; // Import auth from your firebase.ts file
-import useAuthStore from "../../store/authStore"; // Import the auth store
+import { auth } from "../../firebase";
+import useAuthStore from "../../store/authStore";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -27,14 +26,14 @@ const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { login } = useAuthStore(); // Get the login function from the store
+  const { login } = useAuthStore();
 
   const handleSignIn = async () => {
     setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      login(); // Update the store
-      router.replace("/(tabs)"); // Navigate to the main app screen after successful sign-in
+      login();
+      router.replace("/(tabs)");
     } catch (error) {
       alert(error.message);
     } finally {
@@ -109,7 +108,10 @@ const SignIn = () => {
                 Forgot your password?
               </Text>
             </Pressable>
-            <Pressable onPress={handleSignIn} className="mt-5 w-full shadow-md shadow-black">
+            <Pressable
+              onPress={handleSignIn}
+              className="mt-5 w-full shadow-md shadow-black"
+            >
               <Gradient borderRadius={30}>
                 <View className="w-lg h-14 items-center justify-center">
                   {loading ? (

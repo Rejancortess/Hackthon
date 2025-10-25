@@ -1,4 +1,3 @@
-
 // @ts-ignore: allow importing SVGs without type declarations
 import Logo from "@/assets/images/app-logo.svg";
 import {
@@ -19,8 +18,8 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 
 import { useRouter } from "expo-router";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase"; // Import auth from your firebase.ts file
-import useAuthStore from "../../store/authStore"; // Import the auth store
+import { auth } from "../../firebase";
+import useAuthStore from "../../store/authStore";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -29,14 +28,13 @@ const SignUp = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
-  const { login } = useAuthStore(); // Get the login function from the store
-
+  const { login } = useAuthStore();
   const handleSignUp = async () => {
     setLoading(true);
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      login(); // Update the store
-      router.replace("/(tabs)"); // Navigate to the main app screen after successful sign-up
+      login();
+      router.replace("/(tabs)");
     } catch (error) {
       alert(error.message);
     } finally {
