@@ -1,50 +1,36 @@
-# Welcome to your Expo app 👋
+# 🧠 MindLink – Student Mental Health Support App  
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+> Supporting students’ well-being through intelligent, empathetic technology.  
+> Built with **Expo**, **Firebase**, **Gemini AI**, and **Zustand**.
 
-## Get started
+---
 
-1. Install dependencies
+## 🌍 Sustainable Development Goals (SDGs)
+- **SDG 3:** Good Health & Well-being  
+- **SDG 10:** Reduced Inequalities  
 
-   ```bash
-   npm install
-   ```
+---
 
-2. Start the app
+## 💡 About MindLink
+**MindLink** is a cross-platform mobile app designed to support students’ **mental health and emotional well-being**.  
+It provides a **safe, private space** where students can track their moods, talk to peer volunteers or AI, and access helpful self-care resources — all in one simple, supportive app.  
 
-   ```bash
-   npx expo start
-   ```
+By combining **Gemini AI’s intelligence** with a human touch, MindLink empowers students to express themselves freely and get guidance without fear or stigma.  
 
-In the output, you'll find options to open the app in a
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## ⚙️ Tech Stack
+- **Expo (React Native)** – cross-platform mobile framework  
+- **Firebase** – authentication, Firestore, and cloud storage  
+- **Gemini AI** – conversational intelligence and guidance  
+- **Zustand** – lightweight global state management  
+- **NativeWind** – Tailwind CSS styling for React Native  
 
-## Get a fresh project
+---
 
-When you're ready, run:
-
+## 🚀 Quick Start
 ```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+git clone https://github.com/yourusername/mindlink.git
+cd mindlink
+npm install
+npx expo start
