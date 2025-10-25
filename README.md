@@ -22,10 +22,10 @@ Built with **Expo**, **Firebase**, **Gemini AI**, and **Zustand**.
 
 ## ⚙️ Tech Stack
 - Expo (React Native)  
-- Firebase  
-- Gemini AI  
-- Zustand  
-- NativeWind  
+- Firebase - backend and authentication
+- Gemini AI  - AI chat features  
+- Zustand  - for state management storage
+- NativeWind  - styling with Tailwind CSS
 
 ---
 
