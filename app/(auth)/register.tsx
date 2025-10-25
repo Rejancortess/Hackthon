@@ -1,3 +1,4 @@
+
 // @ts-ignore: allow importing SVGs without type declarations
 import Logo from "@/assets/images/app-logo.svg";
 import {
@@ -17,6 +18,9 @@ import {
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import { useRouter } from "expo-router";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase"; // Import auth from your firebase.ts file
+import useAuthStore from "../../store/authStore"; // Import the auth store
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -25,6 +29,20 @@ const SignUp = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const { login } = useAuthStore(); // Get the login function from the store
+
+  const handleSignUp = async () => {
+    setLoading(true);
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      login(); // Update the store
+      router.replace("/(tabs)"); // Navigate to the main app screen after successful sign-up
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <GradientBackground colors={["#FAF5FF", "#EFF6FF", "#E0E7FF"]}>
@@ -87,7 +105,7 @@ const SignUp = () => {
                 />
               </Pressable>
             </View>
-            <Pressable className="mt-5 w-full">
+            <Pressable onPress={handleSignUp} className="mt-5 w-full">
               <Gradient
                 className="w-full shadow-md shadow-black"
                 borderRadius={30}

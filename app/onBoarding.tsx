@@ -13,9 +13,17 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { useRouter } from "expo-router";
 // @ts-ignore: allow importing SVGs without type declarations
 import Logo from "../assets/images/app-logo.svg";
+import useAuthStore from "../store/authStore";
 
 const OnBoardingScreen = () => {
   const router = useRouter();
+  const { completeOnboarding } = useAuthStore();
+
+  const handlePress = () => {
+    completeOnboarding();
+    router.push("/(auth)/login");
+  };
+
   return (
     <GradientBackground colors={["#EEF2FF", "#E0E7FF", "#C7D2FE"]}>
       <GradientCircle
@@ -56,7 +64,7 @@ const OnBoardingScreen = () => {
           <Text className="text-primary-light mb-6 text-center text-lg font-medium">
             Choose your role to get started
           </Text>
-          <TouchableOpacity activeOpacity={0.8}>
+          <TouchableOpacity activeOpacity={0.8} >
             <Gradient
               colors={["#C7D2FE", "#A78BFA", "#7C3AED"]}
               style={theme.button}
@@ -69,10 +77,7 @@ const OnBoardingScreen = () => {
               </View>
             </Gradient>
           </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={() => router.push("/(auth)/login")}
-          >
+          <TouchableOpacity activeOpacity={0.8} onPress={handlePress}>
             <Gradient
               colors={["#C7D2FE", "#A78BFA", "#7C3AED"]}
               style={theme.button}

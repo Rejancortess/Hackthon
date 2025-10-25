@@ -1,3 +1,4 @@
+
 // @ts-ignore: allow importing SVGs without type declarations
 import Logo from "@/assets/images/app-logo.svg";
 import {
@@ -16,6 +17,9 @@ import {
   View,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase"; // Import auth from your firebase.ts file
+import useAuthStore from "../../store/authStore"; // Import the auth store
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -23,6 +27,20 @@ const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { login } = useAuthStore(); // Get the login function from the store
+
+  const handleSignIn = async () => {
+    setLoading(true);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      login(); // Update the store
+      router.replace("/(tabs)"); // Navigate to the main app screen after successful sign-in
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <GradientBackground colors={["#FAF5FF", "#EFF6FF", "#E0E7FF"]}>
@@ -91,7 +109,7 @@ const SignIn = () => {
                 Forgot your password?
               </Text>
             </Pressable>
-            <Pressable className="mt-5 w-full shadow-md shadow-black">
+            <Pressable onPress={handleSignIn} className="mt-5 w-full shadow-md shadow-black">
               <Gradient borderRadius={30}>
                 <View className="w-lg h-14 items-center justify-center">
                   {loading ? (
@@ -111,7 +129,7 @@ const SignIn = () => {
             >
               <View className="mt-5 w-full flex-row items-center justify-center">
                 <Text className="text-secondary-light">
-                  Don&apos;t have an account?{" "}
+                  Don't have an account?{" "}
                 </Text>
 
                 <Text className="font-medium text-[#7353B9]">Sign Up</Text>

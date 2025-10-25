@@ -1,13 +1,18 @@
-import { Stack } from "expo-router";
-import React from "react";
+import { Stack, useRouter } from "expo-router";
+import { useEffect } from "react";
+import useAuthStore from "../../store/authStore"; // Adjust the path to your store
 
 const AuthLayout = () => {
-  return (
-    <Stack>
-      <Stack.Screen name="login" options={{ headerShown: false }} />
-      <Stack.Screen name="register" options={{ headerShown: false }} />
-    </Stack>
-  );
+  const { isAuthenticated } = useAuthStore();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.replace("/(tabs)");
+    }
+  }, [isAuthenticated]);
+
+  return <Stack screenOptions={{ headerShown: false }} />;
 };
 
 export default AuthLayout;
