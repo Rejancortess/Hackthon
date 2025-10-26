@@ -25,17 +25,42 @@ const SignIn = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>(
+    {}
+  );
+
   const router = useRouter();
   const { login } = useAuthStore();
 
+  const validate = () => {
+    const newErrors: { email?: string; password?: string } = {};
+
+    if (!email.trim()) newErrors.email = "Email is required.";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+      newErrors.email = "Enter a valid email address.";
+
+    if (!password.trim()) newErrors.password = "Password is required.";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSignIn = async () => {
+    if (!validate()) return;
+
     setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
       login();
       router.replace("/(tabs)");
-    } catch (error) {
-      alert(error.message);
+    } catch (error: any) {
+      if (error.code === "auth/invalid-credential") {
+        setErrors({
+          password: "Invalid email or password.",
+        });
+      } else {
+        alert(error.message);
+      }
     } finally {
       setLoading(false);
     }
@@ -44,7 +69,7 @@ const SignIn = () => {
   return (
     <GradientBackground colors={["#FAF5FF", "#EFF6FF", "#E0E7FF"]}>
       <KeyboardAwareScrollView
-        className="flex-1 "
+        className="flex-1"
         keyboardShouldPersistTaps="handled"
         enableOnAndroid={true}
         extraScrollHeight={Platform.OS === "ios" ? 80 : 100}
@@ -65,7 +90,7 @@ const SignIn = () => {
             Welcome back to your mindfulness journey
           </Text>
 
-          <View className="mt-3 w-full items-center rounded-3xl bg-white p-5 shadow-md">
+          <View className="w-full items-center rounded-3xl bg-white p-5 shadow-md">
             <Text className="text-primary text-center text-2xl font-bold">
               Sign In
             </Text>
@@ -73,41 +98,85 @@ const SignIn = () => {
               Enter your details to continue
             </Text>
 
-            <View className="mb-4 mt-10 flex-row items-center rounded-xl bg-gray-100 px-4 py-2">
-              <Ionicons name="mail-outline" size={20} color="#9CA3AF" />
-              <TextInput
-                placeholder="Email Address"
-                placeholderTextColor="#9CA3AF"
-                className="h-12 flex-1 px-3 text-gray-800"
-                keyboardType="email-address"
-                value={email}
-                onChangeText={setEmail}
-              />
+            {/* Email Input */}
+            <View className="mb-2 mt-10 w-full">
+              <View
+                className={`flex-row items-center rounded-xl px-4 py-2 ${
+                  errors.email
+                    ? "border border-red-400 bg-red-50"
+                    : "bg-gray-100"
+                }`}
+              >
+                <Ionicons
+                  name="mail-outline"
+                  size={20}
+                  color={errors.email ? "#DC2626" : "#9CA3AF"}
+                />
+                <TextInput
+                  placeholder="Email Address"
+                  placeholderTextColor="#9CA3AF"
+                  className="h-12 flex-1 px-3 text-gray-800"
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  value={email}
+                  onChangeText={text => {
+                    setEmail(text);
+                    if (errors.email)
+                      setErrors({ ...errors, email: undefined });
+                  }}
+                />
+              </View>
+              {errors.email && (
+                <Text className="mt-1 text-sm text-red-500">
+                  {errors.email}
+                </Text>
+              )}
             </View>
 
-            <View className="mb-4 mt-2 flex-row items-center rounded-xl bg-gray-100 px-4 py-2">
-              <Ionicons name="lock-closed-outline" size={20} color="#9CA3AF" />
-              <TextInput
-                placeholder="Password"
-                placeholderTextColor="#9CA3AF"
-                className="h-12 flex-1 px-3 text-gray-800"
-                secureTextEntry={!showPassword}
-                value={password}
-                onChangeText={setPassword}
-              />
-              <Pressable onPress={() => setShowPassword(!showPassword)}>
+            <View className="mb-2 mt-3 w-full">
+              <View
+                className={`flex-row items-center rounded-xl px-4 py-2 ${
+                  errors.password
+                    ? "border border-red-400 bg-red-50"
+                    : "bg-gray-100"
+                }`}
+              >
                 <Ionicons
-                  name={showPassword ? "eye-outline" : "eye-off-outline"}
+                  name="lock-closed-outline"
                   size={20}
-                  color="#9CA3AF"
+                  color={errors.password ? "#DC2626" : "#9CA3AF"}
                 />
-              </Pressable>
+                <TextInput
+                  placeholder="Password"
+                  placeholderTextColor="#9CA3AF"
+                  className="h-12 flex-1 px-3 text-gray-800"
+                  secureTextEntry={!showPassword}
+                  value={password}
+                  onChangeText={text => {
+                    setPassword(text);
+                    if (errors.password)
+                      setErrors({ ...errors, password: undefined });
+                  }}
+                />
+                <Pressable onPress={() => setShowPassword(!showPassword)}>
+                  <Ionicons
+                    name={showPassword ? "eye-outline" : "eye-off-outline"}
+                    size={20}
+                    color="#9CA3AF"
+                  />
+                </Pressable>
+              </View>
+              {errors.password && (
+                <Text className="mt-1 text-sm text-red-500">
+                  {errors.password}
+                </Text>
+              )}
             </View>
+
             <Pressable onPress={() => {}} className="mt-2 self-end">
-              <Text className="text-sm font-medium ">
-                Forgot your password?
-              </Text>
+              <Text className="text-sm font-medium">Forgot your password?</Text>
             </Pressable>
+
             <Pressable
               onPress={handleSignIn}
               className="mt-5 w-full shadow-md shadow-black"
@@ -124,16 +193,13 @@ const SignIn = () => {
             </Pressable>
 
             <Pressable
-              onPress={() => {
-                router.push("/register");
-              }}
-              className="w-full "
+              onPress={() => router.push("/register")}
+              className="w-full"
             >
               <View className="mt-5 w-full flex-row items-center justify-center">
                 <Text className="text-secondary-light">
                   Don't have an account?{" "}
                 </Text>
-
                 <Text className="font-medium text-[#7353B9]">Sign Up</Text>
               </View>
             </Pressable>

@@ -5,6 +5,8 @@ import {
   GradientBackground,
 } from "@/components/ui/GradientBackground";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
+import { useRouter } from "expo-router";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import {
   ActivityIndicator,
@@ -15,9 +17,6 @@ import {
   View,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-
-import { useRouter } from "expo-router";
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
 import useAuthStore from "../../store/authStore";
 
@@ -27,16 +26,44 @@ const SignUp = () => {
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState<{
+    username?: string;
+    email?: string;
+    password?: string;
+  }>({});
   const router = useRouter();
   const { login } = useAuthStore();
+
+  const validate = () => {
+    const newErrors: { username?: string; email?: string; password?: string } =
+      {};
+
+    if (!username.trim()) newErrors.username = "Username is required.";
+    if (!email.trim()) newErrors.email = "Email is required.";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+      newErrors.email = "Enter a valid email address.";
+    if (!password.trim()) newErrors.password = "Password is required.";
+    else if (password.length < 6)
+      newErrors.password = "Password must be at least 6 characters.";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSignUp = async () => {
+    if (!validate()) return; // Stop if validation fails
+
     setLoading(true);
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       login();
       router.replace("/(tabs)");
-    } catch (error) {
-      alert(error.message);
+    } catch (error: any) {
+      if (error.code === "auth/email-already-in-use") {
+        setErrors({ email: "This email is already registered." });
+      } else {
+        alert(error.message);
+      }
     } finally {
       setLoading(false);
     }
@@ -45,7 +72,7 @@ const SignUp = () => {
   return (
     <GradientBackground colors={["#FAF5FF", "#EFF6FF", "#E0E7FF"]}>
       <KeyboardAwareScrollView
-        className="flex-1 "
+        className="flex-1"
         keyboardShouldPersistTaps="handled"
         enableOnAndroid={true}
         extraScrollHeight={Platform.OS === "ios" ? 80 : 100}
@@ -60,40 +87,86 @@ const SignUp = () => {
             Join MindLink
           </Text>
           <Text className="text-secondary-dark mt-2 px-6 text-center">
-            Start your journey to mindfulness living
+            Start your journey to mindful living
           </Text>
+
           <View className="mt-8 w-full px-8">
+            {/* USERNAME */}
             <Text className="text-primary font-medium">Username</Text>
-            <View className="mb-4 mt-2 flex-row items-center rounded-2xl bg-white px-4 py-2 shadow-md">
+            <View
+              className={`mb-1 mt-2 flex-row items-center rounded-2xl px-4 py-2 shadow-md ${
+                errors.username ? "border border-red-400 bg-red-50" : "bg-white"
+              }`}
+            >
               <TextInput
                 placeholder="Enter your username"
                 placeholderTextColor="#ADAEBC"
                 className="h-12 flex-1 px-3 text-gray-800"
                 value={username}
-                onChangeText={setUsername}
+                onChangeText={text => {
+                  setUsername(text);
+                  if (errors.username)
+                    setErrors({ ...errors, username: undefined });
+                }}
               />
-              <Ionicons name="person" size={20} color="#9CA3AF" />
+              <Ionicons
+                name="person"
+                size={20}
+                color={errors.username ? "#DC2626" : "#9CA3AF"}
+              />
             </View>
+            {errors.username && (
+              <Text className="mb-2 text-sm text-red-500">
+                {errors.username}
+              </Text>
+            )}
+
+            {/* EMAIL */}
             <Text className="text-primary font-medium">Email Address</Text>
-            <View className="mb-4 mt-2 flex-row items-center rounded-2xl bg-white px-4 py-2 shadow-md">
+            <View
+              className={`mb-1 mt-2 flex-row items-center rounded-2xl px-4 py-2 shadow-md ${
+                errors.email ? "border border-red-400 bg-red-50" : "bg-white"
+              }`}
+            >
               <TextInput
                 placeholder="Enter your email"
                 placeholderTextColor="#ADAEBC"
                 className="h-12 flex-1 px-3 text-gray-800"
+                autoCapitalize="none"
                 value={email}
-                onChangeText={setEmail}
+                onChangeText={text => {
+                  setEmail(text);
+                  if (errors.email) setErrors({ ...errors, email: undefined });
+                }}
               />
-              <Ionicons name="mail" size={20} color="#9CA3AF" />
+              <Ionicons
+                name="mail"
+                size={20}
+                color={errors.email ? "#DC2626" : "#9CA3AF"}
+              />
             </View>
+            {errors.email && (
+              <Text className="mb-2 text-sm text-red-500">{errors.email}</Text>
+            )}
+
+            {/* PASSWORD */}
             <Text className="text-primary font-medium">Password</Text>
-            <View className="mb-4 mt-2 flex-row items-center rounded-2xl bg-white px-4 py-2 shadow-md">
+            <View
+              className={`mb-1 mt-2 flex-row items-center rounded-2xl px-4 py-2 shadow-md ${
+                errors.password ? "border border-red-400 bg-red-50" : "bg-white"
+              }`}
+            >
               <TextInput
                 placeholder="Enter your password"
                 placeholderTextColor="#ADAEBC"
                 secureTextEntry={!showPassword}
                 className="h-12 flex-1 px-3 text-gray-800"
                 value={password}
-                onChangeText={setPassword}
+                onChangeText={text => {
+                  setPassword(text);
+                  if (errors.password)
+                    setErrors({ ...errors, password: undefined });
+                }}
               />
               <Pressable onPress={() => setShowPassword(!showPassword)}>
                 <Ionicons
@@ -103,6 +176,13 @@ const SignUp = () => {
                 />
               </Pressable>
             </View>
+            {errors.password && (
+              <Text className="mb-2 text-sm text-red-500">
+                {errors.password}
+              </Text>
+            )}
+
+            {/* SIGN UP BUTTON */}
             <Pressable onPress={handleSignUp} className="mt-5 w-full">
               <Gradient
                 className="w-full shadow-md shadow-black"
@@ -117,12 +197,13 @@ const SignUp = () => {
                 </View>
               </Gradient>
             </Pressable>
-            <Pressable onPress={() => router.back()} className="w-full ">
+
+            {/* SIGN IN LINK */}
+            <Pressable onPress={() => router.back()} className="w-full">
               <View className="mt-5 w-full flex-row items-center justify-center">
                 <Text className="text-secondary-light">
                   Already have an account?
                 </Text>
-
                 <Text className="font-medium text-[#7353B9]"> Sign In</Text>
               </View>
             </Pressable>

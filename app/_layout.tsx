@@ -20,8 +20,9 @@ export default function RootLayout() {
     const inAuthGroup = segments[0] === "(auth)";
     const inOnboarding = segments[0] === "onBoarding";
     const inTabsGroup = segments[0] === "(tabs)";
+    const inSettings = segments[0] === "settings";
 
-    if (isAuthenticated && isOnboardingCompleted && !inTabsGroup) {
+    if (isAuthenticated && isOnboardingCompleted && !inTabsGroup && !inSettings) {
       router.replace("/(tabs)");
     } else if (isOnboardingCompleted && !isAuthenticated && !inAuthGroup) {
       router.replace("/(auth)/login");
@@ -41,6 +42,7 @@ export default function RootLayout() {
         <Stack.Screen name="onBoarding" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="settings" options={{ headerShown: false }} />
       </Stack>
     </>
   );
