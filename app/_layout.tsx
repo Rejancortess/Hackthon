@@ -1,6 +1,6 @@
 import { Stack, useRouter, useSegments } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
-import { StatusBar } from "react-native";
 import "../global.css";
 import useAuthStore from "../store/authStore";
 
@@ -36,7 +36,7 @@ export default function RootLayout() {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar style="dark" backgroundColor="transparent" translucent />
       <Stack>
         <Stack.Screen name="onBoarding" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />

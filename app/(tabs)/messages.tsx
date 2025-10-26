@@ -1,11 +1,11 @@
+import { GradientBackground } from "@/components/ui/GradientBackground";
 import React from "react";
-import { Text, View } from "react-native";
 
 const chat = () => {
   return (
-    <View>
-      <Text>chat</Text>
-    </View>
+    <GradientBackground
+      colors={["#F3E8FF", "#E5E7EB", "#111827"]}
+    ></GradientBackground>
   );
 };
 
