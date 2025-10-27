@@ -9,8 +9,8 @@ const HomeScreen = () => {
   const router = useRouter();
   return (
     <GradientBackground colors={["#C8A2C8", "#B5B5B5", "#111827"]}>
-      <SafeAreaView className="flex-1 ">
-        <View className="mt-5 w-full flex-row items-center px-5">
+      <SafeAreaView className="flex-1 px-8">
+        <View className="mt-5 w-full flex-row items-center ">
           <Image
             source={require("../../assets/images/profile.png")}
             className="mr-5 rounded-full border-2 border-white shadow-md shadow-black"
