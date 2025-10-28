@@ -46,23 +46,7 @@ export default function TabLayout() {
           name="messages"
           options={{
             title: "Messages",
-            headerTitle: "Chat Support",
-            headerTitleAlign: "center",
-            headerShadowVisible: false,
-            headerTransparent: true,
-            headerLeft: () => {
-              return (
-                <View style={{ marginLeft: 15 }}>
-                  <Ionicons
-                    name="arrow-back-outline"
-                    size={24}
-                    color="black"
-                    onPress={() => router.back()}
-                  />
-                </View>
-              );
-            },
-
+            headerShown: false,
             tabBarIcon: ({ color }) => (
               <Entypo name="chat" size={24} color={color} />
             ),
