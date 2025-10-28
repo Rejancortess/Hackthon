@@ -2,11 +2,13 @@ import { GradientBackground } from "@/components/ui/GradientBackground";
 import { theme } from "@/theme";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import Octicons from "@expo/vector-icons/Octicons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import React from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+
 const HomeScreen = () => {
   const router = useRouter();
   return (
@@ -116,7 +118,7 @@ const HomeScreen = () => {
               <Text className="text-primary-light text-xl">- A.A. Milne</Text>
             </View>
           </View>
-          <View className="mb-20 mt-10 flex-row justify-between">
+          <View className="mt-10 flex-row justify-between ">
             <TouchableOpacity
               onPress={() => router.push("/(tabs)/messages")}
               activeOpacity={0.8}
@@ -165,6 +167,23 @@ const HomeScreen = () => {
               <Text className="text-primary-light">Student Support</Text>
             </TouchableOpacity>
           </View>
+          <TouchableOpacity activeOpacity={0.6}>
+            <LinearGradient
+              colors={["#B8E6B8", "#B8E0F5"]}
+              style={{ marginBottom: 100 }}
+              className="mb-10 flex-row items-center justify-between overflow-hidden rounded-3xl border-2 border-white p-6"
+            >
+              <View>
+                <Text className="text-primary-bold text-2xl font-bold">
+                  Mood Tracker
+                </Text>
+                <Text className="text-primary-light text-lg">
+                  Track your daily emotions
+                </Text>
+              </View>
+              <Octicons name="graph" size={29} color="black" />
+            </LinearGradient>
+          </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>
     </GradientBackground>
