@@ -118,6 +118,7 @@ const HomeScreen = () => {
           </View>
           <View className="mb-20 mt-10 flex-row justify-between">
             <TouchableOpacity
+              onPress={() => router.push("/(tabs)/messages")}
               activeOpacity={0.8}
               className="mb-10 w-[47%]  items-center justify-center gap-1 rounded-2xl bg-white p-5"
               style={theme.shadow}
