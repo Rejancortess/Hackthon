@@ -117,7 +117,8 @@ const HomeScreen = () => {
             </View>
           </View>
           <View className="mb-20 mt-10 flex-row justify-between">
-            <View
+            <TouchableOpacity
+              activeOpacity={0.8}
               className="mb-10 w-[47%]  items-center justify-center gap-1 rounded-2xl bg-white p-5"
               style={theme.shadow}
             >
@@ -139,8 +140,9 @@ const HomeScreen = () => {
               <Text className="text-primary-light text-center">
                 Talk to someone
               </Text>
-            </View>
-            <View
+            </TouchableOpacity>
+            <TouchableOpacity
+              activeOpacity={0.8}
               className="mb-10 w-[47%] items-center justify-center gap-1 rounded-2xl bg-white p-5"
               style={theme.shadow}
             >
@@ -160,7 +162,7 @@ const HomeScreen = () => {
                 Community
               </Text>
               <Text className="text-primary-light">Student Support</Text>
-            </View>
+            </TouchableOpacity>
           </View>
         </ScrollView>
       </SafeAreaView>
