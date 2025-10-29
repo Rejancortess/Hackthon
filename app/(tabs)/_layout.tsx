@@ -1,8 +1,7 @@
-import { FontAwesome5, Ionicons } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 import Entypo from "@expo/vector-icons/Entypo";
 
-import { router, Tabs } from "expo-router";
-import { View } from "react-native";
+import { Tabs } from "expo-router";
 
 export default function TabLayout() {
   return (
@@ -69,6 +68,7 @@ export default function TabLayout() {
         <Tabs.Screen
           name="motivation"
           options={{
+            headerShown: false,
             title: "Motivation",
             tabBarIcon: ({ color }) => (
               <Entypo name="heart" size={24} color={color} />
