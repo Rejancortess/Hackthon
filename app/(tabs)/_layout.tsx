@@ -93,6 +93,7 @@ export default function TabLayout() {
           name="resources"
           options={{
             title: "Resources",
+            headerShown: false,
             tabBarIcon: ({ color }) => (
               <FontAwesome5 name="book-open" size={24} color={color} />
             ),
