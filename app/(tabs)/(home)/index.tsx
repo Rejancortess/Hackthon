@@ -17,7 +17,7 @@ const HomeScreen = () => {
         <ScrollView className="flex-1 " showsVerticalScrollIndicator={false}>
           <View className="mt-5 w-full flex-row items-center ">
             <Image
-              source={require("../../assets/images/profile.png")}
+              source={require("@/assets/images/profile.png")}
               className="mr-5 rounded-full border-2 border-white shadow-md shadow-black"
               style={{
                 width: 48,
@@ -35,12 +35,7 @@ const HomeScreen = () => {
               activeOpacity={0.5}
               onPress={() => router.push("/settings")}
             >
-              <View
-                className="items-center justify-center rounded-full bg-white px-2 py-4"
-                style={theme.shadow}
-              >
-                <Ionicons name="settings-outline" size={24} color="black" />
-              </View>
+              <Ionicons name="settings-outline" size={26} color="black" />
             </TouchableOpacity>
           </View>
 
@@ -145,6 +140,7 @@ const HomeScreen = () => {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
+              onPress={() => router.push("/studentSupport")}
               activeOpacity={0.8}
               className="mb-10 w-[47%] items-center justify-center gap-1 rounded-2xl bg-white p-5"
               style={theme.shadow}
@@ -167,7 +163,10 @@ const HomeScreen = () => {
               <Text className="text-primary-light">Student Support</Text>
             </TouchableOpacity>
           </View>
-          <TouchableOpacity activeOpacity={0.6}>
+          <TouchableOpacity
+            activeOpacity={0.6}
+            onPress={() => router.push("/moodTracker")}
+          >
             <LinearGradient
               colors={["#B8E6B8", "#B8E0F5"]}
               style={{ marginBottom: 100 }}

@@ -3,6 +3,7 @@ import { Ionicons } from "@expo/vector-icons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { format } from "date-fns";
 import { LinearGradient } from "expo-linear-gradient";
 import { useFocusEffect, useRouter } from "expo-router";
 import React, { useCallback } from "react";
@@ -40,7 +41,7 @@ const Chat = () => {
 
           <View className="mt-10 items-center">
             <Text className="text-primary-light text-lg">
-              Today, October 17th
+              Today, {format(new Date(), "MMMM do")}
             </Text>
             <Text className="text-primary-bold text-xl font-medium">
               Your daily dose of inspiration
@@ -89,7 +90,7 @@ const Chat = () => {
           <View className="mt-10 w-full flex-row items-center justify-between rounded-3xl bg-white px-5 py-3">
             <LinearGradient
               colors={["#D6C7F7", "#A6E3B7"]}
-              className="h-10 w-10 items-center justify-center overflow-hidden rounded-full"
+              className="h-12 w-12 items-center justify-center overflow-hidden rounded-full"
               style={{ elevation: 6 }}
             >
               <Fontisto name="bell-alt" size={18} color="white" />
