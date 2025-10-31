@@ -1,11 +1,12 @@
 import { GradientBackground } from "@/components/ui/GradientBackground";
 import { Ionicons } from "@expo/vector-icons";
+import AntDesign from "@expo/vector-icons/AntDesign";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { useFocusEffect, useRouter } from "expo-router";
 import React, { useCallback } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Chat = () => {
@@ -20,7 +21,7 @@ const Chat = () => {
   return (
     <GradientBackground colors={["#F3E8FF", "#E5E7EB", "#111827"]}>
       <SafeAreaView className="flex-1">
-        <View className="flex-1 px-8">
+        <ScrollView className="flex-1 px-8">
           <View className="relative mt-5 flex-row items-center justify-center">
             <TouchableOpacity
               className="absolute left-0"
@@ -121,7 +122,62 @@ const Chat = () => {
               </View>
             </View>
           </TouchableOpacity>
-        </View>
+
+          <View className="mt-5 flex-row items-center gap-5">
+            <View className="rounded-xl bg-[#EF4444] p-2">
+              <AntDesign name="phone" size={24} color="white" />
+            </View>
+            <Text className="text-2xl font-semibold">Crisis Hotlines</Text>
+          </View>
+
+          <View className="mt-5 w-full  flex-row items-center justify-between gap-2 rounded-2xl border-2 border-[#FEE2E2] bg-white px-4 py-5">
+            <View className="rounded-2xl bg-red-100 p-4">
+              <FontAwesome5 name="heartbeat" size={20} color="#EF4444" />
+            </View>
+            <View>
+              <Text className="text-pri text-lg font-semibold">
+                Crisis Text Line
+              </Text>
+              <Text>Text HOME to 741741</Text>
+            </View>
+            <View className="self-end rounded-xl bg-[#EF4444] p-2">
+              <AntDesign name="phone" size={24} color="white" />
+            </View>
+          </View>
+
+          <View className="mt-5 w-full flex-row items-center justify-between gap-2 rounded-2xl border-2 border-[#FEE2E2] bg-white px-4 py-5">
+            <View className="rounded-2xl bg-red-100 p-4">
+              <FontAwesome5 name="headset" size={20} color="#EF4444" />
+            </View>
+            <View>
+              <Text className="text-pri text-lg font-semibold">
+                Crisis Text Line
+              </Text>
+              <Text>Text HOME to 741741</Text>
+            </View>
+            <View className="self-end rounded-xl bg-[#EF4444] p-2">
+              <AntDesign name="phone" size={24} color="white" />
+            </View>
+          </View>
+
+          <View
+            className="mt-5 w-full flex-row items-center justify-between gap-2 rounded-2xl border-2 border-[#FEE2E2] bg-white px-4 py-5"
+            style={{ marginBottom: 100 }}
+          >
+            <View className="rounded-2xl bg-red-100 p-4">
+              <Ionicons name="chatbubbles-sharp" size={24} color="#EF4444" />
+            </View>
+            <View>
+              <Text className="text-pri text-lg font-semibold">
+                Crisis Text Line
+              </Text>
+              <Text>Text HOME to 741741</Text>
+            </View>
+            <View className="self-end rounded-xl bg-[#EF4444] p-2">
+              <AntDesign name="phone" size={24} color="white" />
+            </View>
+          </View>
+        </ScrollView>
       </SafeAreaView>
     </GradientBackground>
   );

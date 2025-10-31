@@ -1,4 +1,3 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 // @ts-ignore: allow importing SVGs without type declarations
 import Logo from "@/assets/images/app-logo.svg";
 import {
@@ -9,7 +8,7 @@ import { auth } from "@/firebase";
 import useAuthStore from "@/store/authStore";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
 import { useRouter } from "expo-router";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useState } from "react";
 import {
   ActivityIndicator,
@@ -56,8 +55,14 @@ const SignUp = () => {
 
     setLoading(true);
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      await AsyncStorage.setItem("username", username);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      await updateProfile(user, { displayName: username });
+      setUsername(username);
       login();
       router.replace("/(tabs)");
     } catch (error: any) {
