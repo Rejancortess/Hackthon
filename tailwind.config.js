@@ -20,6 +20,7 @@ module.exports = {
           medium: "#9CA3AF",
           dark: "#6B7280",
         },
+        "white-20": "rgba(255, 255, 255, 0.2)",
       },
     },
   },

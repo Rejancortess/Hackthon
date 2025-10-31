@@ -46,11 +46,13 @@ const Chat = () => {
               elevation: 6,
             }}
           >
-            <View className="mb-3 flex-row items-center justify-between">
+            <View
+              className="mb-3 flex-row items-center justify-between "
+              style={{ elevation: 6 }}
+            >
               <LinearGradient
                 colors={["#93C5FD", "#A5B4FC"]}
                 className="h-12 w-12 items-center justify-center overflow-hidden rounded-2xl"
-                style={{ elevation: 6 }}
               >
                 <FontAwesome5 name="brain" size={24} color="white" />
               </LinearGradient>
@@ -85,11 +87,13 @@ const Chat = () => {
               elevation: 6,
             }}
           >
-            <View className="mb-3 flex-row items-center justify-between">
+            <View
+              className="mb-3 flex-row items-center justify-between"
+              style={{ elevation: 6 }}
+            >
               <LinearGradient
                 colors={["#93C5FD", "#A5B4FC"]}
                 className="h-12 w-12 items-center justify-center overflow-hidden rounded-2xl"
-                style={{ elevation: 6 }}
               >
                 <FontAwesome name="handshake-o" size={24} color="white" />
               </LinearGradient>

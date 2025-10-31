@@ -103,7 +103,7 @@ const HomeScreen = () => {
                 className="mt-5 w-20 items-center rounded-3xl bg-white py-3"
               >
                 <Image
-                  style={{ width: 62, height: 75 }}
+                  style={{ width: 75, height: 75 }}
                   source={require("@/assets/images/emotions/scared.png")}
                 />
                 <Text className="text-primary-bold font-medium">Fear</Text>
