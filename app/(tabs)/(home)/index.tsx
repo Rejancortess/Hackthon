@@ -1,16 +1,46 @@
 import { GradientBackground } from "@/components/ui/GradientBackground";
+import { auth } from "@/firebase";
 import { theme } from "@/theme";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Octicons from "@expo/vector-icons/Octicons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
-import React from "react";
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const HomeScreen = () => {
   const router = useRouter();
+  const user = auth.currentUser;
+  const [username, setUsername] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUsername = async () => {
+      try {
+        const storedUsername = await AsyncStorage.getItem("username");
+        if (storedUsername) {
+          setUsername(storedUsername);
+        }
+      } catch (error) {
+        console.error("Failed to fetch username from storage", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsername();
+  }, []);
+
   return (
     <GradientBackground colors={["#C8A2C8", "#B5B5B5", "#111827"]}>
       <SafeAreaView className="flex-1 px-8">
@@ -26,10 +56,18 @@ const HomeScreen = () => {
               resizeMode="contain"
             />
             <View className="flex-1">
-              <Text className="text-primary-bold text-xl font-bold">
-                Hi Rejan!
-              </Text>
-              <Text className="text-primary-light text-lg">Welcome back</Text>
+              {loading ? (
+                <ActivityIndicator size="small" color="#000" />
+              ) : (
+                <>
+                  <Text className="text-primary-bold text-xl font-bold">
+                    Hi {username || "User"}!
+                  </Text>
+                  <Text className="text-primary-light text-lg">
+                    Welcome back
+                  </Text>
+                </>
+              )}
             </View>
             <TouchableOpacity
               activeOpacity={0.5}

@@ -1,9 +1,12 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 // @ts-ignore: allow importing SVGs without type declarations
 import Logo from "@/assets/images/app-logo.svg";
 import {
   Gradient,
   GradientBackground,
 } from "@/components/ui/GradientBackground";
+import { auth } from "@/firebase";
+import useAuthStore from "@/store/authStore";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
 import { useRouter } from "expo-router";
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -17,8 +20,6 @@ import {
   View,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { auth } from "../../firebase";
-import useAuthStore from "../../store/authStore";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -51,11 +52,12 @@ const SignUp = () => {
   };
 
   const handleSignUp = async () => {
-    if (!validate()) return; // Stop if validation fails
+    if (!validate()) return;
 
     setLoading(true);
     try {
       await createUserWithEmailAndPassword(auth, email, password);
+      await AsyncStorage.setItem("username", username);
       login();
       router.replace("/(tabs)");
     } catch (error: any) {
@@ -91,7 +93,6 @@ const SignUp = () => {
           </Text>
 
           <View className="mt-8 w-full px-8">
-            {/* USERNAME */}
             <Text className="text-primary font-medium">Username</Text>
             <View
               className={`mb-1 mt-2 flex-row items-center rounded-2xl px-4 py-2 shadow-md ${
@@ -121,7 +122,6 @@ const SignUp = () => {
               </Text>
             )}
 
-            {/* EMAIL */}
             <Text className="text-primary font-medium">Email Address</Text>
             <View
               className={`mb-1 mt-2 flex-row items-center rounded-2xl px-4 py-2 shadow-md ${
@@ -149,7 +149,6 @@ const SignUp = () => {
               <Text className="mb-2 text-sm text-red-500">{errors.email}</Text>
             )}
 
-            {/* PASSWORD */}
             <Text className="text-primary font-medium">Password</Text>
             <View
               className={`mb-1 mt-2 flex-row items-center rounded-2xl px-4 py-2 shadow-md ${
@@ -182,7 +181,6 @@ const SignUp = () => {
               </Text>
             )}
 
-            {/* SIGN UP BUTTON */}
             <Pressable onPress={handleSignUp} className="mt-5 w-full">
               <Gradient
                 className="w-full shadow-md shadow-black"
@@ -198,7 +196,6 @@ const SignUp = () => {
               </Gradient>
             </Pressable>
 
-            {/* SIGN IN LINK */}
             <Pressable onPress={() => router.back()} className="w-full">
               <View className="mt-5 w-full flex-row items-center justify-center">
                 <Text className="text-secondary-light">
