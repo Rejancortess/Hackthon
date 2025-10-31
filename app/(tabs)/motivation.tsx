@@ -76,11 +76,10 @@ const Chat = () => {
             </Text>
             <Text className="mt-3">— Maya Angelou</Text>
           </View>
-          <TouchableOpacity activeOpacity={0.8}>
+          <TouchableOpacity activeOpacity={0.8} style={{ elevation: 6 }}>
             <LinearGradient
               colors={["#A6E3B7", "#A7DFCA", "#A8D8F0"]}
               className="mt-10 w-full flex-row items-center justify-center gap-3 overflow-hidden rounded-3xl py-5"
-              style={{ elevation: 6 }}
             >
               <FontAwesome name="bookmark" size={24} color="black" />
               <Text className="text-xl font-medium">View Favorites</Text>

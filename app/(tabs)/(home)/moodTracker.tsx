@@ -2,8 +2,10 @@ import { GradientBackground } from "@/components/ui/GradientBackground";
 import { theme } from "@/theme";
 import { Ionicons } from "@expo/vector-icons";
 import Entypo from "@expo/vector-icons/Entypo";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { format } from "date-fns";
+import { LinearGradient } from "expo-linear-gradient";
 import { useFocusEffect, useRouter } from "expo-router";
 import React, { useCallback, useState } from "react";
 import {
@@ -191,12 +193,24 @@ const MoodTracker: React.FC = () => {
               onPress={handleSaveMood}
               activeOpacity={0.8}
               className="mt-7 w-full flex-row items-center justify-center gap-5 rounded-full bg-emerald-400 py-4"
-              style={{ marginBottom: 100 }}
             >
               <Entypo name="heart" size={24} color="black" />
               <Text className="text-primary-bold text-xl font-semibold">
                 Save Mood
               </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={{ elevation: 6, marginBottom: 100 }}
+            >
+              <LinearGradient
+                colors={["#A6E3B7", "#A7DFCA", "#A8D8F0"]}
+                className="mt-5 w-full flex-row items-center justify-center gap-3 overflow-hidden rounded-3xl py-5"
+              >
+                <FontAwesome name="bookmark" size={24} color="black" />
+                <Text className="text-xl font-medium">View Recent Moods</Text>
+              </LinearGradient>
             </TouchableOpacity>
           </ScrollView>
         </KeyboardAwareScrollView>
