@@ -6,7 +6,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { format } from "date-fns";
 import { LinearGradient } from "expo-linear-gradient";
-import { useFocusEffect, useRouter } from "expo-router";
+import { useFocusEffect, useNavigation, useRouter } from "expo-router";
 import React, { useCallback, useState } from "react";
 import {
   Alert,
@@ -38,7 +38,7 @@ const MoodTracker: React.FC = () => {
   const router = useRouter();
   const today = new Date();
   const formattedDate = format(today, "MMMM dd, yyyy");
-
+  const navigation = useNavigation();
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [journal, setJournal] = useState<string>("");
 
@@ -93,7 +93,34 @@ const MoodTracker: React.FC = () => {
 
   useFocusEffect(
     useCallback(() => {
-      return () => {};
+      navigation.getParent()?.setOptions({
+        tabBarStyle: {
+          display: "none",
+        },
+      });
+      return () => {
+        navigation.getParent()?.setOptions({
+          tabBarStyle: {
+            position: "absolute",
+            bottom: 20,
+            left: "8%",
+            right: "8%",
+            elevation: 5,
+            backgroundColor: "#fff",
+            borderRadius: 25,
+            height: 77,
+            marginHorizontal: 20,
+            shadowColor: "#000",
+            shadowOpacity: 0.1,
+            shadowOffset: { width: 0, height: 10 },
+            shadowRadius: 10,
+            borderTopWidth: 0,
+            justifyContent: "center",
+            alignItems: "center",
+            paddingTop: 10,
+          },
+        });
+      };
     }, [])
   );
 
@@ -121,14 +148,14 @@ const MoodTracker: React.FC = () => {
               </Text>
             </View>
 
-            <View className="mt-10 items-center">
+            <View className="mt-5 items-center">
               <Text className="text-primary-light text-lg">Today</Text>
               <Text className="text-primary-bold text-2xl font-semibold">
                 {formattedDate}
               </Text>
             </View>
 
-            <View className="mt-10 items-center">
+            <View className="mt-5 items-center">
               <Text className="text-primary-bold text-2xl font-bold">
                 How are you feeling today?
               </Text>
