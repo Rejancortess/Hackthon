@@ -42,7 +42,7 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
-          name="messages"
+          name="(chat)"
           options={{
             title: "Messages",
             headerShown: false,
