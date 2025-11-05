@@ -82,7 +82,7 @@ const MoodTracker: React.FC = () => {
         : [];
       await AsyncStorage.setItem("moods", JSON.stringify([...existing, entry]));
 
-      Alert.alert("Saved ❤️", "Your mood has been recorded successfully.");
+      Alert.alert("Saved ", "Your mood has been recorded successfully.");
       setSelectedMood(null);
       setJournal("");
     } catch (error) {
@@ -121,7 +121,7 @@ const MoodTracker: React.FC = () => {
           },
         });
       };
-    }, [])
+    }, [navigation])
   );
 
   return (
@@ -132,9 +132,13 @@ const MoodTracker: React.FC = () => {
           keyboardShouldPersistTaps="handled"
           enableOnAndroid={true}
           extraScrollHeight={Platform.OS === "ios" ? 80 : 100}
+          contentContainerStyle={{
+            paddingTop: 24,
+            paddingHorizontal: 24,
+          }}
         >
-          <ScrollView className="flex-1 px-8">
-            <View className="relative mt-5 flex-row items-center justify-center">
+          <ScrollView className="flex-1">
+            <View className="relative flex-row items-center justify-center">
               <TouchableOpacity
                 className="absolute left-0"
                 onPress={() => router.back()}

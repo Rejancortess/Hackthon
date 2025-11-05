@@ -1,4 +1,5 @@
-import { Entypo, Ionicons } from "@expo/vector-icons";
+import ChatHeader from "@/components/messages/ChatHeader";
+import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 import { LinearGradient } from "expo-linear-gradient";
@@ -6,7 +7,6 @@ import { useNavigation, useRouter } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
 import {
   FlatList,
-  Image,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -196,25 +196,7 @@ const AiChatScreen = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <View className="flex-row items-center justify-between border-b border-gray-200 px-5 py-3">
-        <View className="flex-row items-center gap-3">
-          <TouchableOpacity onPress={() => router.back()}>
-            <Ionicons name="arrow-back-outline" size={24} color="#111" />
-          </TouchableOpacity>
-
-          <Image
-            source={require("@/assets/images/Ai-icon.png")}
-            style={{ width: 40, height: 40, borderRadius: 50 }}
-          />
-          <View>
-            <Text className="text-lg font-semibold text-gray-900">
-              MindLink AI
-            </Text>
-            <Text className="text-sm font-medium text-green-500">Online</Text>
-          </View>
-        </View>
-        <Entypo name="dots-three-vertical" size={20} color="#111" />
-      </View>
+      <ChatHeader onPress={() => router.back()} />
 
       <KeyboardAvoidingView
         style={{ flex: 1 }}

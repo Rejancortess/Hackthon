@@ -4,28 +4,40 @@ import MoodTrackerCard from "@/components/home/MoodTrackerCard";
 import Qoute from "@/components/home/Qoute";
 import QuickAccess from "@/components/home/QuickAccess";
 import { GradientBackground } from "@/components/ui/GradientBackground";
-import { auth } from "@/firebase";
+import { auth, db } from "@/firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
+import { doc, getDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const HomeScreen = () => {
   const router = useRouter();
-  const user = auth.currentUser;
   const [username, setUsername] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUsername = async () => {
       try {
-        const storedUsername = await AsyncStorage.getItem("username");
-        if (storedUsername) {
-          setUsername(storedUsername);
+        const user = auth.currentUser;
+        if (user) {
+          const userDocRef = doc(db, "users", user.uid);
+          const userDocSnap = await getDoc(userDocRef);
+
+          if (userDocSnap.exists()) {
+            const userData = userDocSnap.data();
+            setUsername(userData.username);
+
+            await AsyncStorage.setItem("username", userData.username);
+          } else {
+            console.warn("No user document found in Firestore!");
+          }
+        } else {
+          console.warn("No authenticated user found!");
         }
       } catch (error) {
-        console.error("Failed to fetch username from storage", error);
+        console.error("Error fetching username:", error);
       } finally {
         setLoading(false);
       }
@@ -44,7 +56,7 @@ const HomeScreen = () => {
         <ScrollView className="flex-1 " showsVerticalScrollIndicator={false}>
           <Header
             loading={loading}
-            username={username}
+            username={username || "MindLink User"}
             onPress={() => router.push("/settings")}
           />
 

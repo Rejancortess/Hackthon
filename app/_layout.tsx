@@ -17,23 +17,40 @@ export default function RootLayout() {
   useEffect(() => {
     if (!isNavigationReady) return;
 
-    const inAuthGroup = segments[0] === "(auth)";
-    const inOnboarding = segments[0] === "onBoarding";
-    const inTabsGroup = segments[0] === "(tabs)";
-    const inSettings = segments[0] === "settings";
+    const first = segments[0];
+    const inAuthGroup = first === "(auth)";
+    const inOnboarding = first === "onBoarding";
+    const inTabsGroup = first === "(tabs)";
+    const inSettings = first === "settings";
 
-    if (isAuthenticated && isOnboardingCompleted && !inTabsGroup && !inSettings) {
-      router.replace("/(tabs)");
-    } else if (isOnboardingCompleted && !isAuthenticated && !inAuthGroup) {
-      router.replace("/(auth)/login");
-    } else if (!isOnboardingCompleted && !inOnboarding) {
+    if (!isOnboardingCompleted && !inOnboarding) {
       router.replace("/onBoarding");
+      return;
     }
-  }, [isAuthenticated, isOnboardingCompleted, segments, isNavigationReady]);
 
-  if (!isNavigationReady) {
-    return null; // or a loading spinner
-  }
+    if (isOnboardingCompleted && !isAuthenticated && !inAuthGroup) {
+      router.replace("/(auth)/login");
+      return;
+    }
+
+    if (
+      isAuthenticated &&
+      isOnboardingCompleted &&
+      !inTabsGroup &&
+      !inSettings
+    ) {
+      // @ts-ignore
+      router.replace("/(tabs)");
+      return;
+    }
+  }, [
+    isAuthenticated,
+    isOnboardingCompleted,
+    isNavigationReady,
+    segments.join("/"),
+  ]);
+
+  if (!isNavigationReady) return null;
 
   return (
     <>
@@ -42,7 +59,13 @@ export default function RootLayout() {
         <Stack.Screen name="onBoarding" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="settings" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="settings"
+          options={{
+            headerShown: false,
+            presentation: "modal",
+          }}
+        />
       </Stack>
     </>
   );
