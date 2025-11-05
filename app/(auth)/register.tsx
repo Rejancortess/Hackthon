@@ -4,11 +4,12 @@ import {
   Gradient,
   GradientBackground,
 } from "@/components/ui/GradientBackground";
-import { auth } from "@/firebase";
+import { auth, db } from "@/firebase";
 import useAuthStore from "@/store/authStore";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
 import { useRouter } from "expo-router";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
 import {
   ActivityIndicator,
@@ -61,10 +62,18 @@ const SignUp = () => {
         password
       );
       const user = userCredential.user;
+
       await updateProfile(user, { displayName: username });
-      setUsername(username);
+
+      await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid,
+        username: username,
+        email: email,
+        createdAt: new Date(),
+      });
+
       login();
-      router.replace("/(tabs)");
+      router.push("/(tabs)/(home)");
     } catch (error: any) {
       if (error.code === "auth/email-already-in-use") {
         setErrors({ email: "This email is already registered." });

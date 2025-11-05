@@ -19,8 +19,8 @@ const Chat = () => {
   return (
     <GradientBackground colors={["#F3E8FF", "#E5E7EB", "#111827"]}>
       <SafeAreaView className="flex-1">
-        <View className="flex-1 px-6 pt-10">
-          <View className="relative flex-row items-center justify-center">
+        <View className="flex-1 px-8 ">
+          <View className="relative mt-5 flex-row items-center justify-center">
             <TouchableOpacity
               className="absolute left-0"
               onPress={() => router.back()}

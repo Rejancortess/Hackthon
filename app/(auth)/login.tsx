@@ -52,7 +52,7 @@ const SignIn = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       login();
-      router.replace("/(tabs)");
+      router.push("/(tabs)/(home)");
     } catch (error: any) {
       if (error.code === "auth/invalid-credential") {
         setErrors({
@@ -98,7 +98,6 @@ const SignIn = () => {
               Enter your details to continue
             </Text>
 
-            {/* Email Input */}
             <View className="mb-2 mt-10 w-full">
               <View
                 className={`flex-row items-center rounded-xl px-4 py-2 ${
@@ -198,7 +197,7 @@ const SignIn = () => {
             >
               <View className="mt-5 w-full flex-row items-center justify-center">
                 <Text className="text-secondary-light">
-                  Don't have an account?{" "}
+                  Don&apos;t have an account?{" "}
                 </Text>
                 <Text className="font-medium text-[#7353B9]">Sign Up</Text>
               </View>
