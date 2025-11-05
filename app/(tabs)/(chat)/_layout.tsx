@@ -11,7 +11,7 @@ const ChatLayout = () => {
         }}
       />
       <Stack.Screen
-        name="aiChatboot"
+        name="aiChatbot"
         options={{
           headerShown: false,
         }}

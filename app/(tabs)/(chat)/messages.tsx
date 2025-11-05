@@ -10,7 +10,6 @@ const Chat = () => {
 
   useFocusEffect(
     useCallback(() => {
-      // You can trigger any refresh logic here if needed
       return () => {};
     }, [])
   );
@@ -36,7 +35,7 @@ const Chat = () => {
 
           {/* AI Chatbot Card */}
           <TouchableOpacity
-            onPress={() => router.push("/aiChatboot")}
+            onPress={() => router.push("/aiChatbot")}
             className="mt-8 flex-row items-center rounded-3xl bg-white p-5"
             style={{
               shadowColor: "#000",
@@ -87,7 +86,7 @@ const Chat = () => {
 
           {/* Volunteer Card */}
           <TouchableOpacity
-            onPress={() => router.push("/aiChatboot")}
+            onPress={() => router.push("/aiChatbot")}
             className="mt-6 flex-row items-center rounded-3xl bg-white p-5"
             style={{
               shadowColor: "#000",
