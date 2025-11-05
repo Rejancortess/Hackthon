@@ -1,6 +1,6 @@
 import { Entypo, Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
-import axios from "axios"; // ✅ Axios import
+import axios from "axios";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation, useRouter } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
@@ -31,7 +31,6 @@ const AiChatScreen = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const flatListRef = useRef<FlatList<Message>>(null);
 
-  // Hide tab bar on this screen
   useFocusEffect(
     React.useCallback(() => {
       navigation.getParent()?.setOptions({ tabBarStyle: { display: "none" } });
@@ -60,7 +59,6 @@ const AiChatScreen = () => {
     }, [navigation])
   );
 
-  // Initial AI message
   useEffect(() => {
     setMessages([
       {
@@ -75,7 +73,6 @@ const AiChatScreen = () => {
     ]);
   }, []);
 
-  // ✅ Updated handleSend with Axios and proper response parsing
   const handleSend = async () => {
     if (!input.trim()) return;
 
@@ -93,7 +90,6 @@ const AiChatScreen = () => {
     setInput("");
     Keyboard.dismiss();
 
-    // Show typing indicator
     const typingMsg: Message = {
       id: "typing",
       text: "MindLink AI is typing...",
@@ -103,7 +99,6 @@ const AiChatScreen = () => {
     setMessages(prev => [...prev, typingMsg]);
 
     try {
-      // 🌿 Add a "system" instruction to guide AI behavior
       const response = await axios.post(
         "https://kravixstudio.com/api/v1/chat",
         {
@@ -133,7 +128,6 @@ const AiChatScreen = () => {
           ? response.data.aiResponse
           : "No response from AI.";
 
-      // Remove typing indicator
       setMessages(prev => prev.filter(msg => msg.id !== "typing"));
 
       const aiMsg: Message = {
@@ -150,7 +144,6 @@ const AiChatScreen = () => {
     } catch (error) {
       console.error("AI API Error:", error);
 
-      // Remove typing indicator
       setMessages(prev => prev.filter(msg => msg.id !== "typing"));
 
       const errorMsg: Message = {
@@ -203,7 +196,6 @@ const AiChatScreen = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      {/* Header */}
       <View className="flex-row items-center justify-between border-b border-gray-200 px-5 py-3">
         <View className="flex-row items-center gap-3">
           <TouchableOpacity onPress={() => router.back()}>
@@ -224,7 +216,6 @@ const AiChatScreen = () => {
         <Entypo name="dots-three-vertical" size={20} color="#111" />
       </View>
 
-      {/* Chat Area */}
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -242,7 +233,6 @@ const AiChatScreen = () => {
           }
         />
 
-        {/* Input Area */}
         <View className="flex-1 justify-end">
           <View className="w-full flex-row items-center justify-between px-5">
             <View className="mr-3 flex-1 flex-row items-center rounded-full bg-gray-100 px-4 py-2">
@@ -265,7 +255,6 @@ const AiChatScreen = () => {
             </TouchableOpacity>
           </View>
 
-          {/* Crisis Notice */}
           <View className="mt-2 rounded-lg border-t border-red-200 bg-red-50 py-1">
             <Text className="text-center text-xs font-medium text-red-500">
               Crisis Support: 911{"  "}
