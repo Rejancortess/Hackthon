@@ -1,3 +1,4 @@
+import DailyQoute from "@/components/motivation/DailyQoute";
 import { GradientBackground } from "@/components/ui/GradientBackground";
 import { Ionicons } from "@expo/vector-icons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
@@ -48,34 +49,11 @@ const Chat = () => {
             </Text>
           </View>
 
-          <View
-            className="mt-8 rounded-3xl bg-white px-8 py-5"
-            style={{
-              shadowColor: "#000",
-              shadowOffset: { width: 0, height: 4 },
-              shadowOpacity: 0.1,
-              shadowRadius: 8,
-              elevation: 6,
-            }}
-          >
-            <View className="w-full items-end">
-              <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={() => setIsFavorited(!isFavorited)}
-              >
-                <Ionicons
-                  name={isFavorited ? "heart" : "heart-outline"}
-                  size={24}
-                  color={isFavorited ? "#EF4444" : "#9CA3AF"}
-                />
-              </TouchableOpacity>
-            </View>
-            <Text className="text-primary-bold mt-2 text-2xl font-medium">
-              &quot;Every morning brings new potential, but only if you get up
-              and embrace it.&quot;
-            </Text>
-            <Text className="mt-3">— Maya Angelou</Text>
-          </View>
+          <DailyQoute
+            isFavorited={isFavorited}
+            setIsFavorited={setIsFavorited}
+          />
+
           <TouchableOpacity activeOpacity={0.8} style={{ elevation: 6 }}>
             <LinearGradient
               colors={["#A6E3B7", "#A7DFCA", "#A8D8F0"]}
