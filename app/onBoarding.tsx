@@ -3,6 +3,7 @@ import {
   GradientBackground,
 } from "@/components/ui/GradientBackground";
 import { GradientCircle } from "@/components/ui/GradientCircle";
+import useAuthStore from "@/store/authStore";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -13,13 +14,19 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { useRouter } from "expo-router";
 // @ts-ignore: allow importing SVGs without type declarations
 import Logo from "../assets/images/app-logo.svg";
-import useAuthStore from "../store/authStore";
 
 const OnBoardingScreen = () => {
   const router = useRouter();
-  const { completeOnboarding } = useAuthStore();
+  const { completeOnboarding, setRole } = useAuthStore();
 
-  const handlePress = () => {
+  const handleUserPress = () => {
+    setRole("user");
+    completeOnboarding();
+    router.push("/(auth)/login");
+  };
+
+  const handleVolunteerPress = () => {
+    setRole("volunteer");
     completeOnboarding();
     router.push("/(auth)/login");
   };
@@ -64,7 +71,7 @@ const OnBoardingScreen = () => {
           <Text className="text-primary-light mb-6 text-center text-lg font-medium">
             Choose your role to get started
           </Text>
-          <TouchableOpacity activeOpacity={0.8} >
+          <TouchableOpacity activeOpacity={0.8} onPress={handleVolunteerPress}>
             <Gradient
               colors={["#C7D2FE", "#A78BFA", "#7C3AED"]}
               style={theme.button}
@@ -77,7 +84,7 @@ const OnBoardingScreen = () => {
               </View>
             </Gradient>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.8} onPress={handlePress}>
+          <TouchableOpacity activeOpacity={0.8} onPress={handleUserPress}>
             <Gradient
               colors={["#C7D2FE", "#A78BFA", "#7C3AED"]}
               style={theme.button}
