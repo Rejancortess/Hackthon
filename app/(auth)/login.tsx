@@ -4,6 +4,8 @@ import {
   Gradient,
   GradientBackground,
 } from "@/components/ui/GradientBackground";
+import { auth } from "@/firebase";
+import useAuthStore from "@/store/authStore";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
 import { useRouter } from "expo-router";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -17,8 +19,6 @@ import {
   View,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { auth } from "../../firebase";
-import useAuthStore from "../../store/authStore";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -30,7 +30,7 @@ const SignIn = () => {
   );
 
   const router = useRouter();
-  const { login } = useAuthStore();
+  const { login, role } = useAuthStore();
 
   const validate = () => {
     const newErrors: { email?: string; password?: string } = {};
@@ -52,7 +52,12 @@ const SignIn = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       login();
-      router.push("/(tabs)/(home)");
+
+      if (role === "volunteer") {
+        router.replace("/(volunteer)/dashboard");
+      } else {
+        router.replace("/(tabs)/(home)");
+      }
     } catch (error: any) {
       if (error.code === "auth/invalid-credential") {
         setErrors({

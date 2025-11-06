@@ -5,7 +5,7 @@ import "../global.css";
 import useAuthStore from "../store/authStore";
 
 export default function RootLayout() {
-  const { isAuthenticated, isOnboardingCompleted } = useAuthStore();
+  const { isAuthenticated, isOnboardingCompleted, role } = useAuthStore();
   const router = useRouter();
   const segments = useSegments();
   const [isNavigationReady, setNavigationReady] = useState(false);
@@ -21,6 +21,7 @@ export default function RootLayout() {
     const inAuthGroup = first === "(auth)";
     const inOnboarding = first === "onBoarding";
     const inTabsGroup = first === "(tabs)";
+    const inVolunteerGroup = first === "(volunteer)";
     const inSettings = first === "settings";
 
     if (!isOnboardingCompleted && !inOnboarding) {
@@ -33,21 +34,22 @@ export default function RootLayout() {
       return;
     }
 
-    if (
-      isAuthenticated &&
-      isOnboardingCompleted &&
-      !inTabsGroup &&
-      !inSettings
-    ) {
-      // @ts-ignore
-      router.replace("/(tabs)");
-      return;
+    if (isAuthenticated && isOnboardingCompleted) {
+      if (role === "volunteer" && !inVolunteerGroup && !inSettings) {
+        router.replace("/(volunteer)/dashboard");
+        return;
+      }
+      if (role === "user" && !inTabsGroup && !inSettings) {
+        router.replace("/(tabs)/(home)");
+        return;
+      }
     }
   }, [
     isAuthenticated,
     isOnboardingCompleted,
     isNavigationReady,
     segments.join("/"),
+    role,
   ]);
 
   if (!isNavigationReady) return null;
@@ -66,6 +68,7 @@ export default function RootLayout() {
             presentation: "modal",
           }}
         />
+        <Stack.Screen name="(volunteer)" options={{ headerShown: false }} />
       </Stack>
     </>
   );

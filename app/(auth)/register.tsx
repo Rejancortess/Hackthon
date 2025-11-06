@@ -33,7 +33,7 @@ const SignUp = () => {
     password?: string;
   }>({});
   const router = useRouter();
-  const { login } = useAuthStore();
+  const { login, role } = useAuthStore();
 
   const validate = () => {
     const newErrors: { username?: string; email?: string; password?: string } =
@@ -73,7 +73,11 @@ const SignUp = () => {
       });
 
       login();
-      router.push("/(tabs)/(home)");
+      if (role === "volunteer") {
+        router.replace("/(volunteer)/dashboard");
+      } else {
+        router.replace("/(tabs)/(home)");
+      }
     } catch (error: any) {
       if (error.code === "auth/email-already-in-use") {
         setErrors({ email: "This email is already registered." });
