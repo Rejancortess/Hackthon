@@ -1,17 +1,14 @@
+import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { Text } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const VolunteerDashboard = () => {
   return (
-    <SafeAreaView className="flex-1 items-center justify-center ">
-      <Text className="text-3xl font-bold text-violet-600">
-        Volunteer Dashboard
+    <LinearGradient colors={["#F9FAFB", "#949495"]} className="flex-1 px-7">
+      <Text className="text-primary-bold mt-10 text-xl font-medium">
+        Upcoming Chats
       </Text>
-      <Text className="mt-2 text-lg text-gray-600">
-        Welcome! You’re logged in as a volunteer.
-      </Text>
-    </SafeAreaView>
+    </LinearGradient>
   );
 };
 
