@@ -1,6 +1,6 @@
+import useAuthStore from "@/store/authStore";
 import { Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
-import useAuthStore from "../../store/authStore"; // Adjust the path to your store
 
 const AuthLayout = () => {
   const { isAuthenticated } = useAuthStore();
@@ -8,7 +8,7 @@ const AuthLayout = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      router.replace("/(tabs)");
+      router.replace("/(tabs)/(home)");
     }
   }, [isAuthenticated]);
 

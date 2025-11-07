@@ -47,7 +47,7 @@ const HomeScreen = () => {
   }, []);
 
   const handleMoodPress = () => {
-    router.push(`/moodTracker`);
+    router.push("/moodTracker");
   };
 
   return (

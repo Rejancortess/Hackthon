@@ -121,8 +121,6 @@ const AiChatScreen = () => {
         }
       );
 
-      console.log("🔍 Full API Response:", response.data);
-
       const aiReply =
         typeof response.data.aiResponse === "string"
           ? response.data.aiResponse
@@ -148,7 +146,7 @@ const AiChatScreen = () => {
 
       const errorMsg: Message = {
         id: Date.now().toString() + "_error",
-        text: "⚠️ Sorry, I couldn’t connect to MindLink’s AI right now. Please try again later.",
+        text: " Sorry, I couldn’t connect to MindLink’s AI right now. Please try again later.",
         sender: "ai",
         time: new Date().toLocaleTimeString([], {
           hour: "2-digit",

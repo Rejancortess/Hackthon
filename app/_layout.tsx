@@ -1,8 +1,8 @@
+import useAuthStore from "@/store/authStore";
 import { Stack, useRouter, useSegments } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import "../global.css";
-import useAuthStore from "../store/authStore";
 
 export default function RootLayout() {
   const { isAuthenticated, isOnboardingCompleted, role } = useAuthStore();
