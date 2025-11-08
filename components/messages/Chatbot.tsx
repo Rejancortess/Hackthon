@@ -20,7 +20,6 @@ const Chatbot = ({ onPress }: ChatbotProps) => {
       }}
       activeOpacity={0.8}
     >
-      {/* Icon */}
       <View className="h-20 w-20 items-center justify-center">
         <Image
           source={require("@/assets/images/Ai-icon.png")}
@@ -32,7 +31,6 @@ const Chatbot = ({ onPress }: ChatbotProps) => {
         />
       </View>
 
-      {/* Content */}
       <View className="flex-1 pl-4">
         <View className="flex-row items-start justify-between">
           <Text className="text-primary-bold text-xl font-semibold leading-tight">

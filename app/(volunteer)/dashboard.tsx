@@ -1,3 +1,4 @@
+import UpcomingChat from "@/components/volunteer/UpcomingChat";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { Text } from "react-native";
@@ -8,6 +9,8 @@ const VolunteerDashboard = () => {
       <Text className="text-primary-bold mt-10 text-xl font-medium">
         Upcoming Chats
       </Text>
+      <UpcomingChat profileImg={require("@/assets/images/user-1.png")} />
+      <UpcomingChat profileImg={require("@/assets/images/user-2.png")} />
     </LinearGradient>
   );
 };
