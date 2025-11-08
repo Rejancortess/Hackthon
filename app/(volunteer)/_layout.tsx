@@ -86,6 +86,22 @@ const VolunteerLayout = () => {
           tabBarIcon: ({ color }) => (
             <Entypo name="chat" size={24} color={color} />
           ),
+          headerTitleAlign: "center",
+          headerTransparent: true,
+          headerStyle: {
+            elevation: 0,
+          },
+          headerTitleStyle: {
+            color: "#1E293B",
+            backgroundColor: "transparent",
+          },
+          headerLeft: () => {
+            return (
+              <TouchableOpacity className="ml-5" onPress={() => router.back()}>
+                <Ionicons name="arrow-back" size={25} color="#374151" />
+              </TouchableOpacity>
+            );
+          },
         }}
       />
     </Tabs>
