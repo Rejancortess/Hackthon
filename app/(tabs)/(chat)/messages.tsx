@@ -36,7 +36,7 @@ const Chat = () => {
 
           <Chatbot onPress={() => router.push("/aiChatbot")} />
 
-          <PeerVolunteer onPress={() => router.push("/aiChatbot")} />
+          <PeerVolunteer onPress={() => router.push("/volunteerChat")} />
         </View>
       </SafeAreaView>
     </GradientBackground>
