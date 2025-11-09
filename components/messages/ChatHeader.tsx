@@ -4,9 +4,12 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 
 type ChatHeaderProps = {
   onPress: () => void;
+  profile?: string;
+  name?: string;
+  status?: string;
 };
 
-const ChatHeader = ({ onPress }: ChatHeaderProps) => {
+const ChatHeader = ({ onPress, profile, name, status }: ChatHeaderProps) => {
   return (
     <View className="flex-row items-center justify-between border-b border-gray-200 px-5 py-3">
       <View className="flex-row items-center gap-3">
@@ -15,14 +18,17 @@ const ChatHeader = ({ onPress }: ChatHeaderProps) => {
         </TouchableOpacity>
 
         <Image
-          source={require("@/assets/images/Ai-icon.png")}
+          // @ts-ignore
+          source={profile}
           style={{ width: 40, height: 40, borderRadius: 50 }}
         />
         <View>
           <Text className="text-lg font-semibold text-gray-900">
-            MindLink AI
+            {name || "Support Agent"}
           </Text>
-          <Text className="text-sm font-medium text-green-500">Online</Text>
+          <Text className="text-sm font-medium text-green-500">
+            {status || "Online"}
+          </Text>
         </View>
       </View>
       <Entypo name="dots-three-vertical" size={20} color="#111" />

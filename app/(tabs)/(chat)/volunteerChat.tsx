@@ -1,7 +1,5 @@
-import ChatHeader from "@/components/messages/ChatHeader";
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
-import axios from "axios";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation, useRouter } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
@@ -9,7 +7,6 @@ import {
   FlatList,
   Keyboard,
   KeyboardAvoidingView,
-  Platform,
   Text,
   TextInput,
   TouchableOpacity,
@@ -20,11 +17,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 type Message = {
   id: string;
   text: string;
-  sender: "user" | "ai";
+  sender: "user" | "volunteer";
   time: string;
 };
 
-const AiChatScreen = () => {
+const VolunteerChatScreen = () => {
   const router = useRouter();
   const navigation = useNavigation();
   const [input, setInput] = useState("");
@@ -63,8 +60,8 @@ const AiChatScreen = () => {
     setMessages([
       {
         id: "1",
-        text: "Hi there! I’m MindLink, your personal mental wellness companion. How are you feeling today?",
-        sender: "ai",
+        text: "Hi there! I’m your volunteer from MindLink Support. How are you doing today?",
+        sender: "volunteer",
         time: new Date().toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",
@@ -73,7 +70,7 @@ const AiChatScreen = () => {
     ]);
   }, []);
 
-  const handleSend = async () => {
+  const handleSend = () => {
     if (!input.trim()) return;
 
     const newMsg: Message = {
@@ -90,78 +87,27 @@ const AiChatScreen = () => {
     setInput("");
     Keyboard.dismiss();
 
-    const typingMsg: Message = {
-      id: "typing",
-      text: "MindLink AI is typing...",
-      sender: "ai",
-      time: "",
-    };
-    setMessages(prev => [...prev, typingMsg]);
-
-    try {
-      const response = await axios.post(
-        "https://kravixstudio.com/api/v1/chat",
-        {
-          message: [
-            {
-              role: "system",
-              content:
-                "You are MindLink, a compassionate mental wellness chatbot that helps users manage their mental health. Speak gently, show empathy, and provide supportive, non-judgmental responses. Avoid medical advice, and focus on emotional support, self-reflection, and coping suggestions.",
-            },
-            { role: "user", content: input.trim() },
-          ],
-          aiModel: "gpt-5",
-          outputType: "text",
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.EXPO_PUBLIC_KRAVIX_API_KEY}`,
-          },
-        }
-      );
-
-      const aiReply =
-        typeof response.data.aiResponse === "string"
-          ? response.data.aiResponse
-          : "No response from AI.";
-
-      setMessages(prev => prev.filter(msg => msg.id !== "typing"));
-
-      const aiMsg: Message = {
-        id: Date.now().toString() + "_ai",
-        text: aiReply,
-        sender: "ai",
+    setTimeout(() => {
+      const volunteerReply: Message = {
+        id: Date.now().toString() + "_volunteer",
+        text: "Thanks for sharing! I’m here to listen. Would you like to tell me more about what’s been going on?",
+        sender: "volunteer",
         time: new Date().toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",
         }),
       };
-
-      setMessages(prev => [...prev, aiMsg]);
-    } catch (error) {
-      console.error("AI API Error:", error);
-
-      setMessages(prev => prev.filter(msg => msg.id !== "typing"));
-
-      const errorMsg: Message = {
-        id: Date.now().toString() + "_error",
-        text: " Sorry, I couldn’t connect to MindLink’s AI right now. Please try again later.",
-        sender: "ai",
-        time: new Date().toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
-      };
-      setMessages(prev => [...prev, errorMsg]);
-    }
+      setMessages(prev => [...prev, volunteerReply]);
+    }, 2000);
   };
 
   const renderMessage = ({ item }: { item: Message }) => {
-    const isAI = item.sender === "ai";
+    const isVolunteer = item.sender === "volunteer";
     return (
-      <View className={`mb-4 max-w-[85%] ${isAI ? "self-start" : "self-end"}`}>
-        {isAI ? (
+      <View
+        className={`mb-4 max-w-[85%] ${isVolunteer ? "self-start" : "self-end"}`}
+      >
+        {isVolunteer ? (
           <LinearGradient
             colors={["#7C3AED", "#4F46E5"]}
             start={{ x: 0, y: 0 }}
@@ -183,10 +129,10 @@ const AiChatScreen = () => {
         )}
         <Text
           className={`mt-1 text-xs text-gray-400 ${
-            isAI ? "text-left" : "text-right"
+            isVolunteer ? "text-left" : "text-right"
           }`}
         >
-          {isAI ? `MindLink AI · ${item.time}` : `${item.time} · You`}
+          {isVolunteer ? `Volunteer · ${item.time}` : `${item.time} · You`}
         </Text>
       </View>
     );
@@ -194,32 +140,29 @@ const AiChatScreen = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <ChatHeader
-        onPress={() => router.back()}
-        profile={require("@/assets/images/Ai-icon.png")}
-        name="MindLink AI Chatbot"
-        status="Available"
-      />
+      <KeyboardAvoidingView style={{ flex: 1 }}>
+        <View className="flex-1 justify-between">
+          <FlatList
+            data={messages}
+            renderItem={renderMessage}
+            keyExtractor={item => item.id}
+            contentContainerStyle={{
+              paddingHorizontal: 16,
+              paddingVertical: 10,
+            }}
+          />
 
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
-      >
-        <FlatList
-          ref={flatListRef}
-          data={messages}
-          renderItem={renderMessage}
-          keyExtractor={item => item.id}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ padding: 16, paddingBottom: 130 }}
-          onContentSizeChange={() =>
-            flatListRef.current?.scrollToEnd({ animated: true })
-          }
-        />
-
-        <View className="flex-1 justify-end">
-          <View className="w-full flex-row items-center justify-between px-5">
+          <View
+            style={{
+              backgroundColor: "#fff",
+              borderTopWidth: 1,
+              borderColor: "#E5E7EB",
+              flexDirection: "row",
+              alignItems: "center",
+              paddingHorizontal: 20,
+              paddingVertical: 10,
+            }}
+          >
             <View className="mr-3 flex-1 flex-row items-center rounded-full bg-gray-100 px-4 py-2">
               <TextInput
                 placeholder="Type your message..."
@@ -239,17 +182,10 @@ const AiChatScreen = () => {
               <Ionicons name="send" size={18} color="#fff" />
             </TouchableOpacity>
           </View>
-
-          <View className="mt-2 rounded-lg border-t border-red-200 bg-red-50 py-1">
-            <Text className="text-center text-xs font-medium text-red-500">
-              Crisis Support: 911{"  "}
-              <Text className="font-semibold underline">Call Now</Text>
-            </Text>
-          </View>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
 
-export default AiChatScreen;
+export default VolunteerChatScreen;
