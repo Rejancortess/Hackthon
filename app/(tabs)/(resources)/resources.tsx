@@ -7,7 +7,13 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { LinearGradient } from "expo-linear-gradient";
 import { useFocusEffect, useRouter } from "expo-router";
 import React, { useCallback } from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  Linking,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Chat = () => {
@@ -47,6 +53,7 @@ const Chat = () => {
           </View>
 
           <TouchableOpacity
+            onPress={() => router.push("/sleepGuide")}
             className="mt-6 flex-row rounded-3xl bg-white p-5"
             style={{
               shadowColor: "#000",
@@ -81,6 +88,11 @@ const Chat = () => {
               shadowRadius: 8,
               elevation: 6,
             }}
+            onPress={() =>
+              Linking.openURL(
+                "https://positivepsychology.com/mindfulness-exercises-techniques-activities/"
+              )
+            }
           >
             <View className="h-12 w-12 items-center justify-center overflow-hidden rounded-2xl bg-[##B3E5FC]">
               <FontAwesome5 name="leaf" size={20} color="#137FB5" />
@@ -107,6 +119,11 @@ const Chat = () => {
               shadowRadius: 8,
               elevation: 6,
             }}
+            onPress={() =>
+              Linking.openURL(
+                "https://www.nih.gov/health-information/your-healthiest-self-wellness-toolkits/physical-wellness-toolkit"
+              )
+            }
           >
             <View className="h-12 w-12 items-center justify-center overflow-hidden rounded-2xl bg-indigo-100">
               <FontAwesome6 name="dumbbell" size={24} color="#8465C9" />
@@ -132,14 +149,16 @@ const Chat = () => {
           </View>
 
           <View className="mt-5 w-full  flex-row items-center justify-between gap-2 rounded-3xl border-2 border-[#FEE2E2] bg-white px-4 py-5">
-            <View className="rounded-2xl bg-red-100 p-4">
-              <FontAwesome5 name="heartbeat" size={20} color="#EF4444" />
-            </View>
-            <View>
-              <Text className="text-primary-bold text-lg font-semibold">
-                Crisis Text Line
-              </Text>
-              <Text>Text HOME to 741741</Text>
+            <View className="flex-row gap-3">
+              <View className="rounded-2xl bg-red-100 p-4">
+                <FontAwesome5 name="heartbeat" size={20} color="#EF4444" />
+              </View>
+              <View>
+                <Text className="text-primary-bold text-lg font-semibold">
+                  Mental Helpline
+                </Text>
+                <Text>0970-039-2709</Text>
+              </View>
             </View>
             <View className="self-end rounded-xl bg-[#EF4444] p-2">
               <AntDesign name="phone" size={24} color="white" />
@@ -147,14 +166,16 @@ const Chat = () => {
           </View>
 
           <View className="mt-5 w-full flex-row items-center justify-between gap-2 rounded-3xl border-2 border-[#FEE2E2] bg-white px-4 py-5">
-            <View className="rounded-2xl bg-red-100 p-4">
-              <FontAwesome5 name="headset" size={20} color="#EF4444" />
-            </View>
-            <View>
-              <Text className="text-pri text-lg font-semibold">
-                National Suicide{"\n"}Prevention
-              </Text>
-              <Text>988 or 1-800-273-8255</Text>
+            <View className="flex-row gap-3">
+              <View className="justify-center rounded-2xl bg-red-100 p-4">
+                <FontAwesome5 name="headset" size={20} color="#EF4444" />
+              </View>
+              <View>
+                <Text className="text-pri text-lg font-semibold">
+                  National Suicide{"\n"}Prevention
+                </Text>
+                <Text>0919-057-1553</Text>
+              </View>
             </View>
             <View className="rounded-xl bg-[#EF4444] p-2">
               <AntDesign name="phone" size={24} color="white" />
@@ -162,14 +183,16 @@ const Chat = () => {
           </View>
 
           <View className="mt-5 w-full flex-row items-center justify-between gap-2 rounded-3xl border-2 border-[#FEE2E2] bg-white px-4 py-5">
-            <View className="rounded-2xl bg-red-100 p-4">
-              <Ionicons name="chatbubbles-sharp" size={24} color="#EF4444" />
-            </View>
-            <View>
-              <Text className="text-primary-bold text-lg font-semibold">
-                SAMHSA Helpline
-              </Text>
-              <Text>1-800-662-4357</Text>
+            <View className="flex-row gap-3">
+              <View className="rounded-2xl bg-red-100 p-4">
+                <Ionicons name="chatbubbles-sharp" size={24} color="#EF4444" />
+              </View>
+              <View>
+                <Text className="text-primary-bold text-lg font-semibold">
+                  SAMHSA Helpline
+                </Text>
+                <Text>0970-039-2709 </Text>
+              </View>
             </View>
             <View className="rounded-xl bg-[#EF4444] p-2">
               <AntDesign name="phone" size={24} color="white" />

@@ -89,7 +89,7 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
-          name="resources"
+          name="(resources)"
           options={{
             title: "Resources",
             headerShown: false,
