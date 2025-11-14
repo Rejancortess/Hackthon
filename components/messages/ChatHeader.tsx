@@ -18,7 +18,7 @@ const ChatHeader = ({ onPress, profile, name, status }: ChatHeaderProps) => {
         </TouchableOpacity>
 
         <Image
-          // @ts-ignore
+          // @ts-ignore++
           source={profile}
           style={{ width: 40, height: 40, borderRadius: 50 }}
         />
