@@ -1,3 +1,4 @@
+import ChatHeader from "@/components/messages/ChatHeader";
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -140,6 +141,12 @@ const VolunteerChatScreen = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
+      <ChatHeader
+        onPress={() => router.back()}
+        profile={require("@/assets/images/user.png")}
+        name="Volunteer Support"
+        status="Available"
+      />
       <KeyboardAvoidingView style={{ flex: 1 }}>
         <View className="flex-1 justify-between">
           <FlatList
