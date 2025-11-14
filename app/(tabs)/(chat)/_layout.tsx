@@ -16,7 +16,7 @@ const ChatLayout = () => {
           headerShown: false,
         }}
       />
-      <Stack.Screen name="volunteerChat" options={{ headerShown: true }} />
+      <Stack.Screen name="volunteerChat" options={{ headerShown: false }} />
     </Stack>
   );
 };
