@@ -1,8 +1,7 @@
 import ChatHeader from "@/components/messages/ChatHeader";
 import { Ionicons } from "@expo/vector-icons";
-import { useFocusEffect } from "@react-navigation/native";
-import { LinearGradient } from "expo-linear-gradient";
-import { useNavigation, useRouter } from "expo-router";
+import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useRef, useState } from "react";
 import {
   FlatList,
@@ -14,11 +13,13 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { onNewMessage, sendMessage } from "@/firebase/chat";
+import useAuthStore from "@/store/authStore";
 
 type Message = {
   id: string;
   text: string;
-  sender: "user" | "volunteer";
+  senderId: string;
   time: string;
 };
 
@@ -28,6 +29,8 @@ const VolunteerChatScreen = () => {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const flatListRef = useRef<FlatList<Message>>(null);
+  const user = useAuthStore((state) => state.user);
+  const { chatId, volunteerId } = useLocalSearchParams();
 
   useFocusEffect(
     React.useCallback(() => {
@@ -58,57 +61,33 @@ const VolunteerChatScreen = () => {
   );
 
   useEffect(() => {
-    setMessages([
-      {
-        id: "1",
-        text: "Hi there! I’m your volunteer from MindLink Support. How are you doing today?",
-        sender: "volunteer",
-        time: new Date().toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
-      },
-    ]);
-  }, []);
+    if (chatId) {
+      const unsubscribe = onNewMessage(chatId as string, setMessages);
+      return () => unsubscribe();
+    }
+  }, [chatId]);
 
   const handleSend = () => {
-    if (!input.trim()) return;
+    if (!input.trim() || !user) return;
 
-    const newMsg: Message = {
-      id: Date.now().toString(),
-      text: input.trim(),
-      sender: "user",
-      time: new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-    };
-
-    setMessages(prev => [...prev, newMsg]);
+    sendMessage(chatId as string, user.uid, input.trim());
     setInput("");
     Keyboard.dismiss();
-
-    setTimeout(() => {
-      const volunteerReply: Message = {
-        id: Date.now().toString() + "_volunteer",
-        text: "Thanks for sharing! I’m here to listen. Would you like to tell me more about what’s been going on?",
-        sender: "volunteer",
-        time: new Date().toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
-      };
-      setMessages(prev => [...prev, volunteerReply]);
-    }, 2000);
   };
 
   const renderMessage = ({ item }: { item: Message }) => {
-    const isVolunteer = item.sender === "volunteer";
+    const isCurrentUser = item.senderId === user?.uid;
     return (
       <View
-        className={`mb-4 max-w-[85%] ${isVolunteer ? "self-start" : "self-end"}`}
+        className={`mb-4 max-w-[85%] ${
+          isCurrentUser ? "self-end" : "self-start"
+        }`}
       >
-        {isVolunteer ? (
+        {isCurrentUser ? (
+          <View className="rounded-2xl border border-gray-300 bg-white p-4">
+            <Text className="text-gray-800">{item.text}</Text>
+          </View>
+        ) : (
           <LinearGradient
             colors={["#7C3AED", "#4F46E5"]}
             start={{ x: 0, y: 0 }}
@@ -123,17 +102,15 @@ const VolunteerChatScreen = () => {
           >
             <Text className="text-white">{item.text}</Text>
           </LinearGradient>
-        ) : (
-          <View className="rounded-2xl border border-gray-300 bg-white p-4">
-            <Text className="text-gray-800">{item.text}</Text>
-          </View>
         )}
         <Text
           className={`mt-1 text-xs text-gray-400 ${
-            isVolunteer ? "text-left" : "text-right"
+            isCurrentUser ? "text-right" : "text-left"
           }`}
         >
-          {isVolunteer ? `Volunteer · ${item.time}` : `${item.time} · You`}
+          {isCurrentUser
+            ? `${item.time} · You`
+            : `Volunteer · ${item.time}`}
         </Text>
       </View>
     );
@@ -152,11 +129,15 @@ const VolunteerChatScreen = () => {
           <FlatList
             data={messages}
             renderItem={renderMessage}
-            keyExtractor={item => item.id}
+            keyExtractor={(item) => item.id}
             contentContainerStyle={{
               paddingHorizontal: 16,
               paddingVertical: 10,
             }}
+            ref={flatListRef}
+            onContentSizeChange={() =>
+              flatListRef.current?.scrollToEnd({ animated: true })
+            }
           />
 
           <View
